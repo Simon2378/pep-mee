@@ -50,7 +50,7 @@
     if (Array.isArray(accounts) && accounts.length) {
       return accounts[Math.floor(Math.random() * accounts.length)].href;
     }
-    return window.WA_HREF || 'https://t.me/';
+    return window.WA_HREF || 'https://wa.me/';
   }
 
   function waLink(message) {
@@ -104,7 +104,7 @@
           '<span class="pepticore-cart-subtotal" id="pepticoreCartSubtotal">$0</span>' +
           '<span class="pepticore-cart-note" id="pepticoreCartNote"></span>' +
         '</div>' +
-        '<a class="pepticore-cart-cta is-disabled" id="pepticoreCartCta" href="#" target="_blank" rel="noopener noreferrer">Order via Telegram</a>' +
+        '<a class="pepticore-cart-cta is-disabled" id="pepticoreCartCta" href="#" target="_blank" rel="noopener noreferrer">Order via WhatsApp</a>' +
       '</div>' +
       '<div class="pepticore-cart-panel" id="pepticoreCartPanel" hidden></div>';
     document.body.appendChild(bar);

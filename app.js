@@ -1535,7 +1535,7 @@
 	  [footWa, fab].forEach(function (link) {
 	    if (!link) return;
 	    link.addEventListener('click', function () {
-	      trackEvent('telegram_redirect', { entityType: 'link', entityId: link.id || 'telegram', label: 'Telegram direct link' });
+	      trackEvent('whatsapp_redirect', { entityType: 'link', entityId: link.id || 'whatsapp', label: 'WhatsApp direct link' });
 	      flushTrack(true);
 	    });
 	  });
@@ -1620,7 +1620,7 @@
         return;
       }
 
-      var waTrigger = target.closest('#fab,a[href*="t.me/"]');
+      var waTrigger = target.closest('#fab,a[href*="wa.me/"],a[href*="api.whatsapp.com/"]');
       if (!waTrigger) return;
       if (!waTrigger.getAttribute('href') || waTrigger.getAttribute('href') === '#') {
         waTrigger.href = wa('Hello PeptidesPrescripts, I would like a catalog overview.');
@@ -1628,10 +1628,10 @@
       waTrigger.setAttribute('target', '_blank');
       waTrigger.setAttribute('rel', 'noopener noreferrer');
       var href = waTrigger.href || '';
-      if (/^https?:\/\/t\.me\//i.test(href)) {
+      if (/^https?:\/\/(?:wa\.me|api\.whatsapp\.com)\//i.test(href)) {
         e.preventDefault();
         e.stopPropagation();
-        trackEvent('telegram_redirect', { entityType: 'link', entityId: waTrigger.id || 'telegram-touch', label: 'Telegram touch link' });
+        trackEvent('whatsapp_redirect', { entityType: 'link', entityId: waTrigger.id || 'whatsapp-touch', label: 'WhatsApp touch link' });
         flushTrack(true);
         window.location.href = href;
       }
@@ -1954,9 +1954,9 @@
     openSearchModal();
   });
   document.addEventListener('click', function (e) {
-    var link = e.target.closest && e.target.closest('a[href*="t.me"]');
+    var link = e.target.closest && e.target.closest('a[href*="wa.me"]');
     if (!link) return;
-    trackEvent('telegram_redirect', { entityType: 'link', entityId: link.className || link.id || 'telegram', label: 'Telegram link' });
+    trackEvent('whatsapp_redirect', { entityType: 'link', entityId: link.className || link.id || 'whatsapp', label: 'WhatsApp link' });
     flushTrack(true);
   });
 
@@ -2160,7 +2160,7 @@
       +   '<div class="home-flow-card reveal">'
       +     '<div class="home-flow-num">03</div>'
       +     '<h3>Send the list</h3>'
-      +     '<p>Add SKUs to cart and send a structured order message directly through Telegram.</p>'
+      +     '<p>Add SKUs to cart and send a structured order message directly through WhatsApp.</p>'
       +   '</div>'
       + '</section>'
 
@@ -2186,7 +2186,7 @@
       +   '<div class="home-seo-grid">'
       +     '<article class="home-seo-card reveal"><h3>Research-use peptide catalog</h3><p>Browse ' + totalSeries + ' research-use peptide series with SKU-level specifications, visible starting prices, and category browsing.</p><a href="/catalog">Open catalog overview</a></article>'
       +     '<article class="home-seo-card reveal"><h3>COA and quality access</h3><p>Review available COA previews and analytical documentation context before submitting an inquiry.</p><a href="/quality">Review COA access</a></article>'
-      +     '<article class="home-seo-card reveal"><h3>Order list workflow</h3><p>Build an order list, review estimated pricing, and send your inquiry through Telegram. Final quote is confirmed by PeptidesPrescripts sales.</p><a href="/order-process">See order process</a></article>'
+      +     '<article class="home-seo-card reveal"><h3>Order list workflow</h3><p>Build an order list, review estimated pricing, and send your inquiry through WhatsApp. Final quote is confirmed by PeptidesPrescripts sales.</p><a href="/order-process">See order process</a></article>'
       +     '<article class="home-seo-card reveal"><h3>Research-use ordering FAQ</h3><p>Read answers about specifications, COA requests, listed prices, member points, fixed shipping, and SKU search.</p><a href="/faq">Read FAQ</a></article>'
       +     '<article class="home-seo-card reveal"><h3>Documentation guides</h3><p>Understand COA fields, HPLC purity context, mass-spectrum records, SKU formats, and research catalog navigation.</p><a href="/guides">Browse guides</a></article>'
       +   '</div>'
@@ -2253,7 +2253,7 @@
       +       '<div class="page-focus-row">'
       +         '<span>Single / combo series</span>'
       +         '<span>COA where available</span>'
-      +         '<span>Telegram-ready cart</span>'
+      +         '<span>WhatsApp-ready cart</span>'
       +       '</div>'
       +     '</div>'
       +     '<div class="page-side fade-in fade-in-d2">'
@@ -2431,7 +2431,7 @@
         +   '<div class="sku-price"><small>USD</small>$' + sk.price + '</div>'
         +   '<button class="sku-cart" type="button" data-cat="' + esc(c.id) + '" data-series="' + esc(s.id) + '" data-sku="' + esc(sk.sku) + '">Add</button>'
         +   '<a class="sku-order" href="' + wa(msg) + '" data-wa-message="' + esc(msg) + '" target="_blank" rel="noopener noreferrer">'
-        +     '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm4.94 6.86-1.66 7.82c-.12.56-.46.7-.94.43l-2.6-1.92-1.25 1.2c-.14.14-.26.26-.53.26l.19-2.69 4.9-4.43c.21-.19-.05-.3-.33-.11l-6.06 3.81-2.61-.82c-.57-.18-.58-.57.12-.84l10.2-3.93c.47-.17.89.11.57.62z"/></svg>'
+        +     '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M17.5 14.4c-.3-.1-1.7-.8-2-.9s-.5-.1-.7.1c-.2.3-.8.9-.9 1.1-.2.2-.3.2-.6.1-.3-.1-1.2-.5-2.3-1.4-.8-.7-1.4-1.6-1.6-1.9-.2-.3 0-.4.1-.6.1-.1.3-.3.4-.5s.2-.3.3-.5c.1-.2.1-.4 0-.5s-.7-1.7-1-2.3-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4s-1 1-1 2.4 1 2.8 1.1 3c.1.2 2 3.1 4.8 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.7-.7 1.9-1.4.2-.7.2-1.3.2-1.4-.1-.1-.3-.2-.5-.2z"/><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15l-1.4 5.1 5.2-1.4A10 10 0 1 0 12 2zm5.9 15.9a8 8 0 0 1-10.1.9l-.4-.2-3 .8.8-3-.2-.4A8 8 0 1 1 17.9 17.9z"/></svg>'
         +     'Order'
         +   '</a>'
         + '</div>';
@@ -2475,7 +2475,7 @@
       +       '<div class="detail-mobile-actions" aria-label="Quick order actions">'
       +         '<a class="detail-mobile-specs" href="#detailSkuList">Specs</a>'
       +         (firstSku ? '<button class="sku-cart detail-mobile-add" type="button" data-cat="' + esc(c.id) + '" data-series="' + esc(s.id) + '" data-sku="' + esc(firstSku.sku) + '">Add ' + esc(firstSku.sku) + '</button>' : '')
-      +         '<a class="detail-mobile-wa" href="' + wa(firstSkuMsg) + '" data-wa-message="' + esc(firstSkuMsg) + '" target="_blank" rel="noopener noreferrer">Telegram</a>'
+      +         '<a class="detail-mobile-wa" href="' + wa(firstSkuMsg) + '" data-wa-message="' + esc(firstSkuMsg) + '" target="_blank" rel="noopener noreferrer">WhatsApp</a>'
       +       '</div>'
       +       '<div class="detail-badges">'
       +         '<span class="badge accent">' + (coaList(s).length ? 'COA mapped' : 'COA status shown') + '</span>'

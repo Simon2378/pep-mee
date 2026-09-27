@@ -2,7 +2,7 @@
   'use strict';
 
   var SALES_ROUTE_STORAGE_KEY = 'pepticore_sales_route';
-  var TELEGRAM_HREF = 'https://t.me/kyle_pep';
+  var WHATSAPP_HREF = 'https://wa.me/447516826329';
 
   function value(params, name, maxLength) {
     return (params.get(name) || '').trim().slice(0, maxLength);
@@ -52,10 +52,10 @@
     }
   }
 
-  function safeTelegramUrl(raw, message) {
+  function safeWhatsappUrl(raw, message) {
     try {
       var url = new URL(String(raw || ''));
-      if (url.protocol !== 'https:' || url.hostname !== 't.me') return '';
+      if (url.protocol !== 'https:' || !/^(?:wa\.me|api\.whatsapp\.com|web\.whatsapp\.com)$/.test(url.hostname)) return '';
       url.searchParams.set('text', message);
       return url.toString();
     } catch (error) {
@@ -63,9 +63,9 @@
     }
   }
 
-  function resolveTelegramRoute() {
+  function resolveWhatsappRoute() {
     var code = storedSalesCode() || 'default';
-    var base = window.WA_HREF || TELEGRAM_HREF;
+    var base = window.WA_HREF || WHATSAPP_HREF;
     return Promise.resolve({
       base: base,
       displayName: 'PeptidesPrescripts',
@@ -104,8 +104,8 @@
     track('quote_started', 'inquiry', entityId, 'Catalog inquiry context started', { hasSku: !!details.sku });
   }
 
-  function prepareTelegramLinks(details) {
-    var links = Array.prototype.slice.call(document.querySelectorAll('[data-inquiry-telegram]'));
+  function prepareWhatsappLinks(details) {
+    var links = Array.prototype.slice.call(document.querySelectorAll('[data-inquiry-whatsapp]'));
     var status = document.querySelector('[data-inquiry-route-status]');
     links.forEach(function (link) {
       link.addEventListener('click', function (event) {
@@ -114,25 +114,25 @@
     });
     if (!links.length) return;
 
-    resolveTelegramRoute().then(function (route) {
-      var href = safeTelegramUrl(route.base, inquiryMessage(details, route));
+    resolveWhatsappRoute().then(function (route) {
+      var href = safeWhatsappUrl(route.base, inquiryMessage(details, route));
       if (!href) throw new Error('route_unavailable');
       links.forEach(function (link) {
         link.setAttribute('href', href);
         link.setAttribute('target', '_blank');
         link.setAttribute('rel', 'noopener noreferrer');
         link.setAttribute('aria-disabled', 'false');
-        link.setAttribute('data-track-event', 'telegram_redirect');
+        link.setAttribute('data-track-event', 'whatsapp_redirect');
         link.setAttribute('data-track-entity-type', 'inquiry');
         link.setAttribute('data-track-entity-id', details.sku || details.series || 'catalog-inquiry');
-        link.setAttribute('data-track-label', details.sku || details.series || 'Catalog Telegram inquiry');
+        link.setAttribute('data-track-label', details.sku || details.series || 'Catalog WhatsApp inquiry');
       });
-      if (status) status.textContent = 'Telegram inquiry is ready. Final quote is confirmed by PeptidesPrescripts sales.';
+      if (status) status.textContent = 'WhatsApp inquiry is ready. Final quote is confirmed by PeptidesPrescripts sales.';
     }).catch(function () {
       links.forEach(function (link) {
         link.setAttribute('aria-disabled', 'true');
       });
-      if (status) status.textContent = 'Telegram routing is temporarily unavailable. Browse the catalog and try again shortly.';
+      if (status) status.textContent = 'WhatsApp routing is temporarily unavailable. Browse the catalog and try again shortly.';
     });
   }
 
@@ -146,7 +146,7 @@
       price: value(params, 'price', 20)
     };
     if (!/^\d+(?:\.\d{1,2})?$/.test(details.price)) details.price = '';
-    prepareTelegramLinks(details);
+    prepareWhatsappLinks(details);
     if (!panel || (!details.series && !details.sku)) return;
 
     trackContextStart(details);
