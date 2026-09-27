@@ -13240,13 +13240,13 @@ body[data-page="seo"] .seo-add-cart-btn .cart-btn-price {
   line-height: 1.25;
 }
 
-body[data-page="seo"] .cart-btn-price-gbp {
+body[data-page="seo"] .cart-btn-price-secondary {
   font-size: 10px;
   opacity: 0.8;
   font-weight: 500;
 }
 
-.price-gbp {
+.price-secondary {
   display: block;
   font-size: 0.82em;
   color: var(--muted);
@@ -13254,8 +13254,8 @@ body[data-page="seo"] .cart-btn-price-gbp {
   margin-top: 2px;
 }
 
-td .price-gbp,
-dd .price-gbp {
+td .price-secondary,
+dd .price-secondary {
   font-family: var(--mono);
 }
 

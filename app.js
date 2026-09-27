@@ -855,7 +855,7 @@
 
   function cartMessage(items) {
     var lines = items.map(function (item, i) {
-      return (i + 1) + '. ' + item.seriesName + ' — ' + item.sku + ' — ' + item.spec + ' — $' + item.price;
+      return (i + 1) + '. ' + item.seriesName + ' — ' + item.sku + ' — ' + item.spec + ' — £' + gbpPrice(item.price);
     });
     return 'Hello PeptidesPrescripts, I would like to order these products:\n\n' + lines.join('\n');
   }
@@ -919,7 +919,7 @@
         +     '<div class="cart-item-meta">'
         +       '<span>' + esc(item.sku) + '</span>'
         +       '<span>' + esc(item.spec) + '</span>'
-        +       '<strong>$' + esc(item.price) + ' <span class="price-gbp">£' + gbpPrice(item.price) + '</span></strong>'
+        +       '<strong>£' + gbpPrice(item.price) + ' <span class="price-secondary">$' + esc(item.price) + '</span></strong>'
         +     '</div>'
         +   '</div>'
         +   '<button class="cart-remove" type="button" data-cart-remove="' + esc(cartItemKey(item)) + '" aria-label="Remove ' + esc(item.seriesName) + '">Remove</button>'
@@ -931,7 +931,7 @@
       sendCart.setAttribute('aria-disabled', 'true');
       if (cartMinNote) {
         cartMinNote.hidden = false;
-        cartMinNote.textContent = 'Add $' + (MIN_ORDER - total) + ' more to reach the $' + MIN_ORDER + ' minimum order';
+        cartMinNote.textContent = 'Add £' + (gbpPrice(MIN_ORDER) - gbpPrice(total)) + ' more to reach the £' + gbpPrice(MIN_ORDER) + ' minimum order';
       }
     } else {
       sendCart.href = wa(cartMessage(items));
@@ -1925,8 +1925,8 @@
     }
     searchResults.innerHTML = hits.slice(0, 30).map(function (h) {
       var priceBits = h.matchedSku
-        ? '$' + h.matchedSku.price
-        : 'from $' + minPrice(h.series);
+        ? '£' + gbpPrice(h.matchedSku.price)
+        : 'from £' + gbpPrice(minPrice(h.series));
       var meta = h.matchedSku
         ? h.matchedSku.sku + ' · ' + h.matchedSku.spec + ' · ' + h.category.label
         : h.series.skus.length + ' options · ' + h.category.label;
@@ -2014,7 +2014,7 @@
       view.innerHTML = renderSeries(cat, s);
       armScrollReveal();
       initMotion('series');
-      if (fabEl) fabEl.href = wa('Hello PeptidesPrescripts, I would like to order ' + s.name + ' (from $' + minPrice(s) + ').');
+      if (fabEl) fabEl.href = wa('Hello PeptidesPrescripts, I would like to order ' + s.name + ' (from £' + gbpPrice(minPrice(s)) + ').');
       trackEvent('product_view', { entityType: 'series', entityId: s.id, label: s.name, value: String(minPrice(s)), metadata: { category: cat.id, skus: s.skus.length } });
       trackEvent('page_view', { entityType: 'route', entityId: 'series', label: s.name });
     } else {
@@ -2099,7 +2099,7 @@
         +   '</div>'
         +   '<div class="home-popular-body">'
         +     '<h3>' + esc(s.name) + '</h3>'
-        +     '<p>' + s.skus.length + ' specs · from $' + minPrice(s) + '</p>'
+        +     '<p>' + s.skus.length + ' specs · from £' + gbpPrice(minPrice(s)) + '</p>'
         +   '</div>'
         + '</a>';
     }).join('');
@@ -2264,12 +2264,12 @@
       +       '<div class="page-side-meta">'
       +         '<span><b>' + c.series.length + '</b> series</span>'
       +         '<span><b>' + totalSkus + '</b> SKUs</span>'
-      +         '<span>from <b>$' + Math.min.apply(null, c.series.map(minPrice)) + '</b></span>'
+      +         '<span>from <b>£' + gbpPrice(Math.min.apply(null, c.series.map(minPrice))) + '</b></span>'
       +       '</div>'
       +       '<div class="page-stats-grid">'
       +         '<div class="page-stat"><b>' + c.series.length + '</b><span>series</span></div>'
       +         '<div class="page-stat"><b>' + totalSkus + '</b><span>SKUs</span></div>'
-      +         '<div class="page-stat"><b>$' + Math.min.apply(null, c.series.map(minPrice)) + '</b><span>from</span></div>'
+      +         '<div class="page-stat"><b>£' + gbpPrice(Math.min.apply(null, c.series.map(minPrice))) + '</b><span>from</span></div>'
       +       '</div>'
       +     '</div>'
       +   '</div>'
@@ -2289,7 +2289,7 @@
       +     '<h3 class="series-card-name">' + esc(s.name) + '</h3>'
       +     '<div class="series-card-meta">' + s.skus.length + ' specification' + (s.skus.length > 1 ? 's' : '') + '</div>'
       +     '<div class="series-card-foot">'
-      +       '<span class="series-card-price"><small>from</small>$' + minPrice(s) + '</span>'
+      +       '<span class="series-card-price"><small>from</small>£' + gbpPrice(minPrice(s)) + '</span>'
       +       '<span class="series-card-cta">View details <svg viewBox="0 0 14 14" aria-hidden="true"><path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>'
       +     '</div>'
       +   '</div>'
@@ -2419,16 +2419,16 @@
     var priceHigh = Math.max.apply(null, s.skus.map(function (k) { return k.price; }));
     var firstSku = s.skus[0];
     var firstSkuMsg = firstSku
-      ? 'Hello PeptidesPrescripts, I would like to order SKU ' + firstSku.sku + ' (' + s.name + ', ' + firstSku.spec + ', $' + firstSku.price + ').'
+      ? 'Hello PeptidesPrescripts, I would like to order SKU ' + firstSku.sku + ' (' + s.name + ', ' + firstSku.spec + ', £' + gbpPrice(firstSku.price) + ').'
       : 'Hello PeptidesPrescripts, I would like to order ' + s.name + '.';
 
     var skuRows = s.skus.map(function (sk, i) {
-      var msg = 'Hello PeptidesPrescripts, I would like to order SKU ' + sk.sku + ' (' + s.name + ', ' + sk.spec + ', $' + sk.price + ').';
+      var msg = 'Hello PeptidesPrescripts, I would like to order SKU ' + sk.sku + ' (' + s.name + ', ' + sk.spec + ', £' + gbpPrice(sk.price) + ').';
       return ''
         + '<div class="sku-row">'
         +   '<div class="sku-code">' + esc(sk.sku) + '</div>'
         +   '<div class="sku-spec">' + esc(sk.spec) + '</div>'
-        +   '<div class="sku-price"><small>USD</small>$' + sk.price + '</div>'
+        +   '<div class="sku-price"><small>GBP</small>£' + gbpPrice(sk.price) + '</div>'
         +   '<button class="sku-cart" type="button" data-cat="' + esc(c.id) + '" data-series="' + esc(s.id) + '" data-sku="' + esc(sk.sku) + '">Add</button>'
         +   '<a class="sku-order" href="' + wa(msg) + '" data-wa-message="' + esc(msg) + '" target="_blank" rel="noopener noreferrer">'
         +     '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M17.5 14.4c-.3-.1-1.7-.8-2-.9s-.5-.1-.7.1c-.2.3-.8.9-.9 1.1-.2.2-.3.2-.6.1-.3-.1-1.2-.5-2.3-1.4-.8-.7-1.4-1.6-1.6-1.9-.2-.3 0-.4.1-.6.1-.1.3-.3.4-.5s.2-.3.3-.5c.1-.2.1-.4 0-.5s-.7-1.7-1-2.3-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4s-1 1-1 2.4 1 2.8 1.1 3c.1.2 2 3.1 4.8 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.7-.7 1.9-1.4.2-.7.2-1.3.2-1.4-.1-.1-.3-.2-.5-.2z"/><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15l-1.4 5.1 5.2-1.4A10 10 0 1 0 12 2zm5.9 15.9a8 8 0 0 1-10.1.9l-.4-.2-3 .8.8-3-.2-.4A8 8 0 1 1 17.9 17.9z"/></svg>'
@@ -2447,7 +2447,7 @@
         +   '</div>'
         +   '<div class="related-body">'
         +     '<div class="related-name">' + esc(rs.name) + '</div>'
-        +     '<div class="related-meta">' + rs.skus.length + ' specs · from $' + minPrice(rs) + '</div>'
+        +     '<div class="related-meta">' + rs.skus.length + ' specs · from £' + gbpPrice(minPrice(rs)) + '</div>'
         +   '</div>'
         + '</a>';
     }).join('');
@@ -2466,9 +2466,9 @@
       +     '<div class="detail-head fade-in fade-in-d2">'
       +       '<div class="detail-kicker">' + esc(c.label) + ' · ' + (story.kicker || '') + '</div>'
       +       '<h1 class="detail-title">' + esc(s.name) + '</h1>'
-      +       '<p class="detail-sub"><em>' + s.skus.length + ' specification' + (s.skus.length > 1 ? 's' : '') + '</em>, priced from $' + priceLow + (priceHigh !== priceLow ? ' to $' + priceHigh : '') + '. Review the exact SKU, listed format, and mapped COA status before submitting an inquiry.</p>'
+      +       '<p class="detail-sub"><em>' + s.skus.length + ' specification' + (s.skus.length > 1 ? 's' : '') + '</em>, priced from £' + gbpPrice(priceLow) + (priceHigh !== priceLow ? ' to £' + gbpPrice(priceHigh) : '') + '. Review the exact SKU, listed format, and mapped COA status before submitting an inquiry.</p>'
       +       '<div class="detail-summary-grid" aria-label="Product summary">'
-      +         '<div><b>$' + priceLow + '</b><span>starting price</span></div>'
+      +         '<div><b>£' + gbpPrice(priceLow) + '</b><span>starting price</span></div>'
       +         '<div><b>' + s.skus.length + '</b><span>specification' + (s.skus.length > 1 ? 's' : '') + '</span></div>'
       +         '<div><b>' + (coaList(s).length || '—') + '</b><span>COA file' + (coaList(s).length > 1 ? 's' : '') + '</span></div>'
       +       '</div>'
@@ -2497,7 +2497,7 @@
       +   '<section class="detail-sku reveal" id="detailSkuList">'
       +     '<header class="detail-sku-head">'
       +       '<h2 class="detail-sku-title">Available <em>specifications</em></h2>'
-      +       '<div class="detail-sku-meta">' + s.skus.length + ' SKUs · USD · per 10-vial pack unless noted</div>'
+      +       '<div class="detail-sku-meta">' + s.skus.length + ' SKUs · GBP · per 10-vial pack unless noted</div>'
       +     '</header>'
       +     '<div class="sku-list">' + skuRows + '</div>'
       +   '</section>'
@@ -2508,7 +2508,7 @@
       // SPECIFICATIONS GRID
       +   '<section class="spec-grid reveal">'
       +     '<div class="spec-cell"><div class="spec-k">Catalog format</div><div class="spec-v">Shown by exact SKU</div></div>'
-      +     '<div class="spec-cell"><div class="spec-k">Price basis</div><div class="spec-v">USD starting reference</div></div>'
+      +     '<div class="spec-cell"><div class="spec-k">Price basis</div><div class="spec-v">GBP starting reference</div></div>'
       +     '<div class="spec-cell"><div class="spec-k">Packaging</div><div class="spec-v">As listed in each SKU row</div></div>'
       +     '<div class="spec-cell"><div class="spec-k">Storage</div><div class="spec-v">Review mapped documentation</div></div>'
       +     '<div class="spec-cell"><div class="spec-k">Record identity</div><div class="spec-v">' + esc(s.id) + ' · ' + s.skus.length + ' SKU' + (s.skus.length > 1 ? 's' : '') + '</div></div>'

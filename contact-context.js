@@ -4,6 +4,8 @@
   var SALES_ROUTE_STORAGE_KEY = 'pepticore_sales_route';
   var WHATSAPP_HREF = 'https://wa.me/447516826329';
 
+  function gbpPrice(usd) { return Math.round(Number(usd) * 0.79) + 2; }
+
   function value(params, name, maxLength) {
     return (params.get(name) || '').trim().slice(0, maxLength);
   }
@@ -81,7 +83,7 @@
       details.series ? 'Product series: ' + details.series : '',
       details.sku ? 'SKU: ' + details.sku : '',
       details.specification ? 'Specification: ' + details.specification : '',
-      details.price ? 'Starting price reference: $' + details.price + ' USD' : '',
+      details.price ? 'Starting price reference: £' + gbpPrice(details.price) + ' GBP' : '',
       'Please confirm the final quote and available documentation.',
       'Research use only. Not for human consumption.',
       'Sales route: ' + route.salesCode
@@ -159,7 +161,7 @@
         field.hidden = true;
         return;
       }
-      output.textContent = name === 'price' ? '$' + details[name] + ' USD starting price' : details[name];
+      output.textContent = name === 'price' ? '£' + gbpPrice(details[name]) + ' GBP starting price' : details[name];
     });
 
     var catalogLink = panel.querySelector('[data-inquiry-catalog-link]');
@@ -169,7 +171,7 @@
       details.series ? 'Product series: ' + details.series : '',
       details.sku ? 'SKU: ' + details.sku : '',
       details.specification ? 'Specification: ' + details.specification : '',
-      details.price ? 'Starting price: $' + details.price + ' USD' : '',
+      details.price ? 'Starting price: £' + gbpPrice(details.price) + ' GBP' : '',
       'Research use only.'
     ].filter(Boolean).join('\n');
 

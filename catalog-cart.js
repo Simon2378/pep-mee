@@ -40,7 +40,7 @@
 
   function cartMessage(items) {
     var lines = items.map(function (item, i) {
-      return (i + 1) + '. ' + item.seriesName + ' — ' + item.sku + ' — ' + item.spec + ' — $' + item.price;
+      return (i + 1) + '. ' + item.seriesName + ' — ' + item.sku + ' — ' + item.spec + ' — £' + gbpPrice(item.price);
     });
     return 'Hello PeptidesPrescripts, I would like to order these products:\n\n' + lines.join('\n');
   }
@@ -139,12 +139,12 @@
     if (!count) return;
 
     bar.querySelector('#pepticoreCartCount').textContent = String(count);
-    bar.querySelector('#pepticoreCartSubtotal').textContent = '$' + total + ' (£' + gbpPrice(total) + ')';
+    bar.querySelector('#pepticoreCartSubtotal').textContent = '£' + gbpPrice(total) + ' ($' + total + ')';
 
     var noteEl = bar.querySelector('#pepticoreCartNote');
     var ctaEl = bar.querySelector('#pepticoreCartCta');
     if (total < MIN_ORDER) {
-      noteEl.textContent = 'Add $' + (MIN_ORDER - total) + ' more to reach the $' + MIN_ORDER + ' minimum order';
+      noteEl.textContent = 'Add £' + (gbpPrice(MIN_ORDER) - gbpPrice(total)) + ' more to reach the £' + gbpPrice(MIN_ORDER) + ' minimum order';
       ctaEl.className = 'pepticore-cart-cta is-disabled';
       ctaEl.href = '#';
       ctaEl.addEventListener('click', preventIfDisabled);
@@ -160,7 +160,7 @@
         '<div class="pepticore-cart-row">' +
           '<div>' +
             '<div class="pepticore-cart-row-name">' + esc(item.seriesName) + '</div>' +
-            '<div class="pepticore-cart-row-meta">' + esc(item.sku) + ' · ' + esc(item.spec) + ' · $' + esc(item.price) + ' (£' + gbpPrice(item.price) + ')</div>' +
+            '<div class="pepticore-cart-row-meta">' + esc(item.sku) + ' · ' + esc(item.spec) + ' · £' + gbpPrice(item.price) + ' ($' + esc(item.price) + ')</div>' +
           '</div>' +
           '<button type="button" class="pepticore-cart-row-remove" data-remove-key="' + esc(cartItemKey(item)) + '">Remove</button>' +
         '</div>';
