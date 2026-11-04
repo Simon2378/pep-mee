@@ -2,9 +2,9 @@
   'use strict';
 
   var CART_STORAGE_KEY = 'pepticore_cart_items';
-  var MIN_ORDER = 100;
+  var MIN_ORDER = 109;
 
-  function gbpPrice(usd) { return Math.round(Number(usd) * 0.79) + 2; }
+  function gbpPrice(usd) { return Math.round(Number(usd) / 1.34); }
 
   function readCart() {
     try {
