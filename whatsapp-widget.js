@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  var HREF = 'https://wa.me/447516826329';
+  var HREF = 'https://wa.me/447512589544';
   var MESSAGE = 'Hello Kyle, I would like to place an order.';
   var DISMISS_KEY = 'pepticore_whatsapp_widget_dismissed';
   var SHOW_DELAY_MS = 3000;

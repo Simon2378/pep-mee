@@ -474,7 +474,7 @@ window.PEPTICORE_DATA = [
 ];
 
 window.WA_ACCOUNTS = [
-  { id: "sales-uk-01", href: "https://wa.me/447516826329" }
+  { id: "sales-uk-01", href: "https://wa.me/447512589544" }
 ];
 
 window.WA_HREF = window.WA_ACCOUNTS[0].href;

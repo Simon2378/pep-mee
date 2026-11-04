@@ -2,7 +2,7 @@
   'use strict';
 
   var SALES_ROUTE_STORAGE_KEY = 'pepticore_sales_route';
-  var WHATSAPP_HREF = 'https://wa.me/447516826329';
+  var WHATSAPP_HREF = 'https://wa.me/447512589544';
 
   function gbpPrice(usd) { return Math.round(Number(usd) * 0.79) + 2; }
 
