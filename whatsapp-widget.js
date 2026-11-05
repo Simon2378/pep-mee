@@ -36,7 +36,7 @@
     wrap.innerHTML =
       '<div class="wa-support-bubble">' +
         '<button type="button" class="wa-support-close" aria-label="Dismiss">&times;</button>' +
-        '<p class="wa-support-msg"><strong>Kyle</strong> · PeptidesPrescripts support<br>Hey, are you trying to order? Tap below and I’ll help you directly on WhatsApp.</p>' +
+        '<p class="wa-support-msg"><strong>Kyle</strong> · Care Peptides support<br>Hey, are you trying to order? Tap below and I’ll help you directly on WhatsApp.</p>' +
         '<a class="wa-support-cta" href="' + href + '" target="_blank" rel="noopener noreferrer"' + trackAttrs + ' data-track-label="WhatsApp support widget CTA">Yes, chat with Kyle</a>' +
       '</div>' +
       '<a class="wa-support-btn" href="' + href + '" target="_blank" rel="noopener noreferrer" aria-label="Chat with Kyle on WhatsApp"' + trackAttrs + ' data-track-label="WhatsApp support widget button">' +

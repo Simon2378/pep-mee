@@ -70,14 +70,14 @@
     var base = window.WA_HREF || WHATSAPP_HREF;
     return Promise.resolve({
       base: base,
-      displayName: 'PeptidesPrescripts',
+      displayName: 'Care Peptides',
       salesCode: code
     });
   }
 
   function inquiryMessage(details, route) {
     return [
-      'Hello ' + (route.displayName || 'PeptidesPrescripts') + ',',
+      'Hello ' + (route.displayName || 'Care Peptides') + ',',
       '',
       'I would like a research-use catalog quote.',
       details.series ? 'Product series: ' + details.series : '',
@@ -129,7 +129,7 @@
         link.setAttribute('data-track-entity-id', details.sku || details.series || 'catalog-inquiry');
         link.setAttribute('data-track-label', details.sku || details.series || 'Catalog WhatsApp inquiry');
       });
-      if (status) status.textContent = 'WhatsApp inquiry is ready. Final quote is confirmed by PeptidesPrescripts sales.';
+      if (status) status.textContent = 'WhatsApp inquiry is ready. Final quote is confirmed by Care Peptides sales.';
     }).catch(function () {
       links.forEach(function (link) {
         link.setAttribute('aria-disabled', 'true');
